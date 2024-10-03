@@ -71,6 +71,9 @@ spec:
                 fromFieldPath: spec.parameters.helm.chart.version
                 toFieldPath: spec.forProvider.chart.version
               - type: FromCompositeFieldPath
+                fromFieldPath: spec.parameters.helm.values
+                toFieldPath: spec.forProvider.values
+              - type: FromCompositeFieldPath
                 fromFieldPath: spec.parameters.helm.wait
                 toFieldPath: spec.forProvider.wait
               - type: FromCompositeFieldPath
