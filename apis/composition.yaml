@@ -27,31 +27,8 @@ spec:
                   chart:
                     name: ghost
                     repository: https://charts.bitnami.com/bitnami
-                    version: 19.3.10
+                    version: 21.1.37
                   namespace: ghost
-                  set:
-                    - name: externalDatabase.host
-                      valueFrom:
-                        secretKeyRef:
-                          key: host
-                    - name: externalDatabase.user
-                      valueFrom:
-                        secretKeyRef:
-                          key: username
-                    - name: externalDatabase.password
-                      valueFrom:
-                        secretKeyRef:
-                          key: password
-                  values:
-                    externalDatabase:
-                      database: upbound
-                      port: 3306
-                    ghostBlogTitle: Upbound Rocks!
-                    ghostHost: upboundrocks.cloud
-                    mysql:
-                      enabled: false
-                    persistence:
-                      enabled: false
                   wait: true
                 rollbackLimit: 3
             patches:
@@ -71,23 +48,8 @@ spec:
                 fromFieldPath: spec.parameters.helm.chart.version
                 toFieldPath: spec.forProvider.chart.version
               - type: FromCompositeFieldPath
+                fromFieldPath: spec.parameters.helm.set
+                toFieldPath: spec.forProvider.set
+              - type: FromCompositeFieldPath
                 fromFieldPath: spec.parameters.helm.values
                 toFieldPath: spec.forProvider.values
-              - type: FromCompositeFieldPath
-                fromFieldPath: spec.parameters.passwordSecretRef.namespace
-                toFieldPath: spec.forProvider.set[0].valueFrom.secretKeyRef.namespace
-              - type: FromCompositeFieldPath
-                fromFieldPath: spec.parameters.passwordSecretRef.name
-                toFieldPath: spec.forProvider.set[0].valueFrom.secretKeyRef.name
-              - type: FromCompositeFieldPath
-                fromFieldPath: spec.parameters.passwordSecretRef.namespace
-                toFieldPath: spec.forProvider.set[1].valueFrom.secretKeyRef.namespace
-              - type: FromCompositeFieldPath
-                fromFieldPath: spec.parameters.passwordSecretRef.name
-                toFieldPath: spec.forProvider.set[1].valueFrom.secretKeyRef.name
-              - type: FromCompositeFieldPath
-                fromFieldPath: spec.parameters.passwordSecretRef.namespace
-                toFieldPath: spec.forProvider.set[2].valueFrom.secretKeyRef.namespace
-              - type: FromCompositeFieldPath
-                fromFieldPath: spec.parameters.passwordSecretRef.name
-                toFieldPath: spec.forProvider.set[2].valueFrom.secretKeyRef.name

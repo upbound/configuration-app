@@ -10,8 +10,18 @@ spec:
   compositeDeletePolicy: Foreground
   parameters:
     providerConfigName: uptest
-    passwordSecretRef:
-      namespace: default
-      name: configuration-app-mariadb
+    helm:
+      values:
+        ghostBlogTitle: Upbound Rocks!
+        ghostHost: upboundrocks.cloud
+        service:
+          type: ClusterIP
+        persistence:
+          enabled: false
+        mysql:
+          primary:
+            persistence:
+              enabled: false
+          enabled: true
   writeConnectionSecretToRef:
     name: configuration-app
