@@ -1,4 +1,34 @@
+# Usage
+# ====================================================================================
+# Generic Makefile to be used across repositories building a crossplane configuration
+# package
+#
+# Available targets:
+#
+# - `yamllint`
+#   Runs yamllint for all files in `api`-folder recursively
+#
+# - `render`
+#   Runs crossplane render to render the output of the composition. Usefule for quick
+#   feedback in order to test templating.
+#   Important note:
+#		Claims need following annotations in order for render to work (adjust the paths
+#		if necessary):
+#			render.crossplane.io/composition-path: apis/pat/composition.yaml
+#       	render.crossplane.io/function-path: examples/functions.yaml
+#
+# - `e2e`
+#   Runs full end-to-end test, including creating cluster, setting up the configuration
+#   and testing if create, import and delete work as expected.
+#	Available options:
+#		SKIP_DELETE (default `false`) skips the deletion of any resources created during the test
+#		SKIP_UPDATE (default `false`) skips testing the update of the claims
+#		SKIP_IMPORT (default `true`) skips testing the import of resources
+#	Example:
+#		`make e2e SKIP_DELETE=true`
+
 # Project Setup
+# ====================================================================================
 
 # Include project.mk for project specific settings
 include project.mk
