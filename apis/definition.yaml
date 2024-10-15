@@ -53,6 +53,10 @@ spec:
                             version:
                               type: string
                               description: chart version
+                        values:
+                          type: object
+                          description: Values for the Helm Chart
+                          x-kubernetes-preserve-unknown-fields: true
                         wait:
                           type: boolean
                           decription: |
