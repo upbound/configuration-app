@@ -17,7 +17,7 @@ spec:
   crossplane:
     version: ">=v1.14.1-0"
   dependsOn:
-    - provider: xpkg.upbound.io/crossplane-contrib/provider-helm
+    - provider: xpkg.upbound.io/upbound/provider-helm
       # renovate: datasource=github-releases depName=crossplane-contrib/provider-helm
       version: "v0.20.0"
     - function: xpkg.upbound.io/crossplane-contrib/function-patch-and-transform
