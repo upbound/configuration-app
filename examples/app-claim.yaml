@@ -17,4 +17,3 @@ spec:
       name: configuration-app-mariadb
   writeConnectionSecretToRef:
     name: configuration-app
-
