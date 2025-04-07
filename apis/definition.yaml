@@ -59,8 +59,9 @@ spec:
                           x-kubernetes-preserve-unknown-fields: true
                         wait:
                           type: boolean
-                          decription: |
-                            Whether to wait or not for resources to be healthy or deletd when installing
+                          default: True
+                          description: |
+                            Whether to wait or not for resources to be healthy or deleted when installing
                             or deleting the chart
                     passwordSecretRef:
                       type: object
