@@ -1,13 +1,10 @@
 apiVersion: platform.upbound.io/v1alpha1
-kind: App
+kind: XApp
 metadata:
-  annotations:
-    render.crossplane.io/composition-path: apis/pat/composition.yaml
-    render.crossplane.io/function-path: examples/functions.yaml
   name: configuration-app
   namespace: default
 spec:
-  compositeDeletePolicy: Foreground
+  #compositeDeletePolicy: Foreground
   parameters:
     helm:
       wait: false
@@ -17,3 +14,4 @@ spec:
       name: configuration-app-mariadb
   writeConnectionSecretToRef:
     name: configuration-app
+    namespace: default
