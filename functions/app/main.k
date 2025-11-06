@@ -1,40 +1,36 @@
 import models.io.upbound.platform.v1alpha1 as platformv1alpha1
-import models.io.crossplane.helm.v1beta1 as helmv1beta1
+import models.io.crossplane.helmm.v1beta1 as helmv1beta1
 
 
-oxr = platformv1alpha1.XApp{**option("params").oxr}
+oxr = option("params").oxr # observed composite resource
+_ocds = option("params").ocds # observed composed resources
+_dxr = option("params").dxr # desired composite resource
+dcds = option("params").dcds # desired composed resources
+
+params = oxr.spec.parameters
 
 _metadata = lambda name: str -> any {
     { annotations = { "krm.kcl.dev/composition-resource-name" = name }}
 }
 
-schema DefaultSpec:
-    deletionPolicy: str
-    providerConfigRef: {str:str}
-    forProvider: {str:str}
-
 # spec defaults
-_defaultSpec = DefaultSpec {
-    deletionPolicy = oxr.spec.parameters.deletionPolicy or "Delete"
+_defaults = {
+    managementPolicies = params.managementPolicies or ["*"]
     providerConfigRef = {
-        name = oxr.spec.parameters.providerConfigName or "default"
+        kind = "ProviderConfig"
+        name = params.providerConfigName
     }
-    forProvider = {}
 }
 
 _items = [
-    helmv1beta1.Release{
-        metadata = {
-            labels = oxr.metadata.labels
-            annotations = oxr.metadata.annotations
-        } | _metadata("helmRelease")
-        spec = {
-            **_defaultSpec
+    helmv1beta1.Release {
+        metadata = _metadata("helmRelease")
+        spec = _defaults | {
             forProvider = {
                 chart = {
                     name = "ghost"
                     repository = "https://charts.bitnami.com/bitnami"
-                    version = oxr.spec.parameters.helm?.chart?.version or "19.3.10"
+                    version = params.helm?.chart?.version or "23.0.29"
                 }
                 namespace = "ghost"
                 set = [
@@ -43,8 +39,7 @@ _items = [
                         valueFrom = {
                             secretKeyRef = {
                                 key = "host"
-                                name = oxr.spec.parameters.passwordSecretRef.name
-                                namespace = oxr.spec.parameters.passwordSecretRef.namespace
+                                name = params.passwordSecretRef.name
                             }
                         }
                     }
@@ -53,8 +48,7 @@ _items = [
                         valueFrom = {
                             secretKeyRef = {
                                 key = "username"
-                                name = oxr.spec.parameters.passwordSecretRef.name
-                                namespace = oxr.spec.parameters.passwordSecretRef.namespace
+                                name = params.passwordSecretRef.name
                             }
                         }
                     }
@@ -63,14 +57,12 @@ _items = [
                         valueFrom = {
                             secretKeyRef = {
                                 key = "password"
-                                name = oxr.spec.parameters.passwordSecretRef.name
-                                namespace = oxr.spec.parameters.passwordSecretRef.namespace
+                                name = params.passwordSecretRef.name
                             }
                         }
                     }
                 ]
-                values = {
-                    **oxr.spec.parameters.helm.values
+                values = params.helm.values | {
                     externalDatabase = {
                       database = "upbound"
                       port =  3306
@@ -84,7 +76,7 @@ _items = [
                       enabled = False
                     }
                 }
-                wait = oxr.spec.parameters.helm.wait
+                wait = params.helm.wait
             }
             rollbackLimit = 3
         }

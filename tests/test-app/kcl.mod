@@ -1,5 +1,5 @@
 [package]
-name = "e2etest-xapp"
+name = "test-app"
 version = "0.0.1"
 
 [dependencies]

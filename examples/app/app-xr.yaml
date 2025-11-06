@@ -1,10 +1,9 @@
 apiVersion: platform.upbound.io/v1alpha1
-kind: XApp
+kind: App
 metadata:
   name: configuration-app
   namespace: default
 spec:
-  #compositeDeletePolicy: Foreground
   parameters:
     helm:
       wait: false
@@ -12,6 +11,4 @@ spec:
     passwordSecretRef:
       namespace: default
       name: configuration-app-mariadb
-  writeConnectionSecretToRef:
-    name: configuration-app
-    namespace: default
+

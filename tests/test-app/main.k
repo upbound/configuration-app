@@ -1,13 +1,13 @@
-import models.io.crossplane.helm.v1beta1 as helmv1beta1
+import models.io.crossplane.helmm.v1beta1 as helmv1beta1
 import models.io.upbound.dev.meta.v1alpha1 as metav1alpha1
 import models.io.upbound.platform.v1alpha1 as platformv1alpha1
 
 _items = [
     metav1alpha1.CompositionTest{
-        metadata.name: "xapp"
+        metadata.name: "app"
         spec= {
             assertResources: [
-                platformv1alpha1.XApp{
+                platformv1alpha1.App{
                     metadata = {
                         name = "configuration-app"
                         namespace = "default"
@@ -23,10 +23,6 @@ _items = [
                             }
                             providerConfigName = "uptest"
                         }
-                        writeConnectionSecretToRef = {
-                            name = "configuration-app"
-                            namespace = "default"
-                        }
                     }
                 }
                 helmv1beta1.Release{
@@ -34,27 +30,24 @@ _items = [
                         annotations = {
                             "crossplane.io/composition-resource-name" = "helmRelease"
                         }
-                        generateName = "configuration-app-"
-                        labels = {
-                            "crossplane.io/composite" = "configuration-app"
-                        }
                         ownerReferences = [
                             {
                                 apiVersion = "platform.upbound.io/v1alpha1"
                                 blockOwnerDeletion = True
                                 controller = True
-                                kind = "XApp"
+                                kind = "App"
                                 name = "configuration-app"
                                 uid = ""
                             }
                         ]
                     }
                     spec = {
+                        managementPolicies = ["*"]
                         forProvider = {
                             chart = {
                                 name = "ghost"
                                 repository = "https://charts.bitnami.com/bitnami"
-                                version = "19.3.10"
+                                version = "23.0.29"
                             }
                             namespace = "ghost"
                             set = [
@@ -64,7 +57,6 @@ _items = [
                                         secretKeyRef = {
                                             key = "host"
                                             name = "configuration-app-mariadb"
-                                            namespace = "default"
                                         }
                                     }
                                 }
@@ -74,7 +66,6 @@ _items = [
                                         secretKeyRef = {
                                             key = "username"
                                             name = "configuration-app-mariadb"
-                                            namespace = "default"
                                         }
                                     }
                                 }
@@ -84,7 +75,6 @@ _items = [
                                         secretKeyRef = {
                                             key = "password"
                                             name = "configuration-app-mariadb"
-                                            namespace = "default"
                                         }
                                     }
                                 }
@@ -106,15 +96,16 @@ _items = [
                             wait = False
                         }
                         providerConfigRef = {
+                            kind = "ProviderConfig"
                             name = "uptest"
                         }
                         rollbackLimit = 3
                     }
                 }
             ]
-            compositionPath: "apis/composition.yaml"
-            xrPath: "examples/app-xr.yaml"
-            xrdPath: "apis/definition.yaml"
+            compositionPath: "apis/apps/composition.yaml"
+            xrPath: "examples/app/app-xr.yaml"
+            xrdPath: "apis/apps/definition.yaml"
             timeoutSeconds: 60
             validate: False
         }

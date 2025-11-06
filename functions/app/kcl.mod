@@ -1,5 +1,5 @@
 [package]
-name = "xapp"
+name = "app"
 version = "0.0.1"
 
 [dependencies]

@@ -3,12 +3,12 @@ import models.io.upbound.platform.v1alpha1 as platformv1alpha1
 
 _items = [
     metav1alpha1.E2ETest{
-        metadata.name: "xapp"
+        metadata.name: "app"
         spec= {
             crossplane.autoUpgrade.channel: "Rapid"
             defaultConditions: ["Ready"]
             manifests: [
-                platformv1alpha1.XApp{
+                platformv1alpha1.App{
                     metadata = {
                         name = "configuration-app"
                     }
