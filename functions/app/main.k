@@ -21,16 +21,16 @@ _defaults = {
         name = params.providerConfigName
     }
 }
-
+ 
 _items = [
     helmv1beta1.Release {
         metadata = _metadata("helmRelease")
         spec = _defaults | {
             forProvider = {
                 chart = {
-                    name = "ghost"
-                    repository = "https://charts.bitnami.com/bitnami"
-                    version = params.helm?.chart?.version or "23.0.29"
+                    name = params.helm.chart.name
+                    repository = params.helm.chart.repo
+                    version = params.helm?.chart?.version or "23.0.25"
                 }
                 namespace = "ghost"
                 set = [
@@ -74,6 +74,10 @@ _items = [
                     }
                     persistence = {
                       enabled = False
+                    }
+                    global.security.allowInsecureImages = True
+                    image = {
+                        repository = "bitnamilegacy/ghost"
                     }
                 }
                 wait = params.helm.wait

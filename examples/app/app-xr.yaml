@@ -6,6 +6,10 @@ metadata:
 spec:
   parameters:
     helm:
+      chart:
+        name: ghost
+        repo: "https://charts.bitnami.com/bitnami"
+        version: 23.0.25
       wait: false
     providerConfigName: uptest
     passwordSecretRef:

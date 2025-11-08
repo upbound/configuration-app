@@ -47,7 +47,7 @@ _items = [
                             chart = {
                                 name = "ghost"
                                 repository = "https://charts.bitnami.com/bitnami"
-                                version = "23.0.29"
+                                version = "23.0.25"
                             }
                             namespace = "ghost"
                             set = [
@@ -91,6 +91,10 @@ _items = [
                                 }
                                 persistence = {
                                     enabled = False
+                                }
+                                global.security.allowInsecureImages = True
+                                image = {
+                                    repository = "bitnamilegacy/ghost"
                                 }
                             }
                             wait = False
