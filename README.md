@@ -13,7 +13,7 @@ The core components of a custom API in [Upbound Project](https://docs.upbound.io
 In this specific configuration, the API contains:
 
 - **an [App](/apis/definition.yaml) custom resource type.**
-- **Composition:** Configured in [/apis/xapps/composition.yaml](/apis/xapps/composition.yaml), it provisions a Ghost blog deployment with helm and resources.
+- **Composition:** Configured in [/apis/composition.yaml](/apis/composition.yaml), it provisions a Ghost blog deployment with helm and resources.
 - **Embedded Function:** The Composition logic is encapsulated within [embedded function](/functions/xapp/main.k)
 
 ## Deployment
