@@ -30,7 +30,7 @@ _items = [
                 chart = {
                     name = params.helm.chart.name
                     repository = params.helm.chart.repo
-                    version = params.helm?.chart?.version or "23.0.25"
+                    version = params.helm?.chart?.version or "25.0.4"
                 }
                 namespace = "ghost"
                 set = [
@@ -63,22 +63,42 @@ _items = [
                     }
                 ]
                 values = params.helm.values | {
-                    externalDatabase = {
-                      database = "upbound"
-                      port =  3306
+                    image = {
+                        registry = "docker.io"
+                        repository = "bitnamilegacy/ghost"
+                        tag = "6.0.5-debian-12-r0"
+                        debug = True
                     }
-                    ghostBlogTitle = "Upbound Rocks!"
-                    ghostHost = "upboundrocks.cloud"
-                    mysql = {
-                      enabled = False
+                    volumePermissions = {
+                        enabled = True
+                        image = {
+                            registry = "docker.io"
+                            repository = "bitnamilegacy/os-shell"
+                            tag = "12-debian-12-r51"
+                        }
+                    }
+                    service = {
+                        type = "LoadBalancer"
                     }
                     persistence = {
-                      enabled = False
+                        size = "10Gi"
                     }
-                    global.security.allowInsecureImages = True
-                    image = {
-                        repository = "bitnamilegacy/ghost"
+                    mysql = {
+                        enabled = False
                     }
+                    externalDatabase = {
+                        port = 3306
+                        database = "upbound"
+                        ssl = True
+                    }
+                    extraEnvVars = [
+                        {
+                            name = "database__connection__ssl__rejectUnauthorized"
+                            value = "false"
+                        }
+                    ]
+                    ghostBlogTitle = "Upbound Rocks!"
+                    ghostHost = "upboundrocks.cloud"
                 }
                 wait = params.helm.wait
             }

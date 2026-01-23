@@ -21,8 +21,8 @@ _items = [
                             helm = {
                                 chart = {
                                     name = "ghost"
-                                    repo = "https://charts.bitnami.com/bitnami"
-                                    version = "23.0.25"
+                                    repo = "oci://registry-1.docker.io/bitnamicharts"
+                                    version = "25.0.4"
                                 }
                                 wait = False
                             }

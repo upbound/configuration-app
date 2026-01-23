@@ -46,8 +46,8 @@ _items = [
                         forProvider = {
                             chart = {
                                 name = "ghost"
-                                repository = "https://charts.bitnami.com/bitnami"
-                                version = "23.0.25"
+                                repository = "oci://registry-1.docker.io/bitnamicharts"
+                                version = "25.0.4"
                             }
                             namespace = "ghost"
                             set = [
@@ -80,22 +80,42 @@ _items = [
                                 }
                             ]
                             values = {
-                                externalDatabase = {
-                                    database = "upbound"
-                                    port = 3306
+                                image = {
+                                    registry = "docker.io"
+                                    repository = "bitnamilegacy/ghost"
+                                    tag = "6.0.5-debian-12-r0"
+                                    debug = True
                                 }
-                                ghostBlogTitle = "Upbound Rocks!"
-                                ghostHost = "upboundrocks.cloud"
+                                volumePermissions = {
+                                    enabled = True
+                                    image = {
+                                        registry = "docker.io"
+                                        repository = "bitnamilegacy/os-shell"
+                                        tag = "12-debian-12-r51"
+                                    }
+                                }
+                                service = {
+                                    type = "LoadBalancer"
+                                }
+                                persistence = {
+                                    size = "10Gi"
+                                }
                                 mysql = {
                                     enabled = False
                                 }
-                                persistence = {
-                                    enabled = False
+                                externalDatabase = {
+                                    port = 3306
+                                    database = "upbound"
+                                    ssl = True
                                 }
-                                global.security.allowInsecureImages = True
-                                image = {
-                                    repository = "bitnamilegacy/ghost"
-                                }
+                                extraEnvVars = [
+                                    {
+                                        name = "database__connection__ssl__rejectUnauthorized"
+                                        value = "false"
+                                    }
+                                ]
+                                ghostBlogTitle = "Upbound Rocks!"
+                                ghostHost = "upboundrocks.cloud"
                             }
                             wait = False
                         }
