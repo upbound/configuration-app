@@ -5,16 +5,25 @@ _items = [
     metav1alpha1.E2ETest{
         metadata.name: "app"
         spec= {
-            crossplane.autoUpgrade.channel: "Rapid"
+            crossplane = {
+                version = "2.0.2-up.5"
+                autoUpgrade.channel = "None"
+            }
             defaultConditions: ["Ready"]
             manifests: [
                 platformv1alpha1.App{
                     metadata = {
                         name = "configuration-app"
+                        namespace = "default"
                     }
                     spec = {
                         parameters = {
                             helm = {
+                                chart = {
+                                    name = "ghost"
+                                    repo = "https://charts.bitnami.com/bitnami"
+                                    version = "23.0.25"
+                                }
                                 wait = False
                             }
                             passwordSecretRef = {
@@ -22,10 +31,6 @@ _items = [
                                 name = "configuration-aws-database-mariadb"
                             }
                             providerConfigName = "configuration-app"
-                        }
-                        writeConnectionSecretToRef = {
-                            name = "configuration-app"
-                            namespace = "default"
                         }
                     }
                 }
@@ -125,9 +130,12 @@ _items = [
                     }
                 }
                 {
-                    apiVersion = "aws.upbound.io/v1beta1"
+                    apiVersion = "aws.m.upbound.io/v1beta1"
                     kind = "ProviderConfig"
-                    metadata.name = "default"
+                    metadata = {
+                        name = "default"
+                        namespace = "default"
+                    }
                     spec = {
                         credentials = {
                             source = "Upbound"
