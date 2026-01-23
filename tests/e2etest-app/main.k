@@ -28,14 +28,71 @@ _items = [
                             }
                             passwordSecretRef = {
                                 namespace = "default"
-                                name = "configuration-aws-database-mariadb"
+                                name = "configuration-aws-database-mariadb-sql"
                             }
                             providerConfigName = "configuration-app"
                         }
                     }
                 }
+                {
+                    apiVersion = "aws.platform.upbound.io/v1alpha1"
+                    kind = "SQLInstance"
+                    metadata = {
+                        name = "configuration-aws-database-mariadb"
+                        namespace = "default"
+                    }
+                    spec = {
+                        parameters = {
+                            region = "us-west-2"
+                            engine = "mariadb"
+                            engineVersion = "11.8.3"
+                            storageGB = 5
+                            autoGeneratePassword = True
+                            passwordSecretRef = {
+                                name = "mariadbsecret"
+                                key = "password"
+                            }
+                            networkRef = {
+                                id = "configuration-app"
+                            }
+                        }
+                    }
+                }
+                {
+                    apiVersion = "aws.platform.upbound.io/v1alpha1"
+                    kind = "EKS"
+                    metadata = {
+                        name = "configuration-aws-eks"
+                        namespace = "default"
+                    }
+                    spec = {
+                        parameters = {
+                            id = "configuration-app"
+                            region = "us-west-2"
+                            version = "1.34"
+                            nodes = {
+                                count = 1
+                                instanceType = "t3.small"
+                            }
+                        }
+                    }
+                }
+                {
+                    apiVersion = "aws.platform.upbound.io/v1alpha1"
+                    kind = "Network"
+                    metadata = {
+                        name = "configuration-aws-network"
+                        namespace = "default"
+                    }
+                    spec = {
+                        parameters = {
+                            id = "configuration-app"
+                            region = "us-west-2"
+                        }
+                    }
+                }
             ]
-            extraResources: [
+            initResources: [
                 {
                     apiVersion = "pkg.crossplane.io/v1"
                     kind = "Configuration"
@@ -43,7 +100,7 @@ _items = [
                         name = "configuration-aws-eks"
                     }
                     spec = {
-                        package = "xpkg.upbound.io/upbound/configuration-aws-eks:v0.17.0"
+                        package = "xpkg.upbound.io/upbound/configuration-aws-eks:v2.0.0"
                     }
                 }
                 {
@@ -53,7 +110,7 @@ _items = [
                         name = "configuration-aws-network"
                     }
                     spec = {
-                        package = "xpkg.upbound.io/upbound/configuration-aws-network:v0.24.0"
+                        package = "xpkg.upbound.io/upbound/configuration-aws-network:v2.0.0"
                     }
                 }
                 {
@@ -63,72 +120,17 @@ _items = [
                         name = "configuration-aws-database"
                     }
                     spec = {
-                        package = "xpkg.upbound.io/upbound/configuration-aws-database:v0.16.0"
+                        package = "xpkg.upbound.io/upbound/configuration-aws-database:v2.0.0"
                     }
                 }
                 {
-                    apiVersion = "aws.platform.upbound.io/v1alpha1"
-                    kind = "XSQLInstance"
-                    metadata = {
-                        name = "configuration-aws-database-mariadb"
-                    }
-                    spec = {
-                        parameters = {
-                            region = "us-west-2"
-                            engine = "mariadb"
-                            engineVersion = "10.11.6"
-                            storageGB = 5
-                            autoGeneratePassword = True
-                            passwordSecretRef = {
-                                namespace = "default"
-                                name = "mariadbsecret"
-                                key = "password"
-                            }
-                            networkRef = {
-                                id = "configuration-app"
-                            }
-                        }
-                        writeConnectionSecretToRef = {
-                            name = "configuration-aws-database-mariadb"
-                            namespace = "default"
-                        }
-                    }
+                    apiVersion: "pkg.crossplane.io/v1"
+                    kind: "Provider"
+                    metadata.name: "upbound-provider-family-aws"
+                    spec.package: "xpkg.upbound.io/upbound/provider-family-aws:v2.3.0"
                 }
-                {
-                    apiVersion = "aws.platform.upbound.io/v1alpha1"
-                    kind = "XEKS"
-                    metadata = {
-                        name = "configuration-aws-eks"
-                    }
-                    spec = {
-                        parameters = {
-                            id = "configuration-app"
-                            region = "us-west-2"
-                            version = "1.27"
-                            nodes = {
-                                count = 1
-                                instanceType = "t3.small"
-                            }
-                        }
-                        writeConnectionSecretToRef = {
-                            name = "configuration-aws-eks-kubeconfig"
-                            namespace = "upbound-system"
-                        }
-                    }
-                }
-                {
-                    apiVersion = "aws.platform.upbound.io/v1alpha1"
-                    kind = "XNetwork"
-                    metadata = {
-                        name = "configuration-aws-network"
-                    }
-                    spec = {
-                        parameters = {
-                            id = "configuration-app"
-                            region = "us-west-2"
-                        }
-                    }
-                }
+            ]
+            extraResources: [
                 {
                     apiVersion = "aws.m.upbound.io/v1beta1"
                     kind = "ProviderConfig"
