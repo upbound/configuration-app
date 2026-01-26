@@ -12,9 +12,9 @@ The core components of a custom API in [Upbound Project](https://docs.upbound.io
 
 In this specific configuration, the API contains:
 
-- **an [App](/apis/definition.yaml) custom resource type.**
-- **Composition:** Configured in [/apis/composition.yaml](/apis/composition.yaml), it provisions a Ghost blog deployment with helm and resources.
-- **Embedded Function:** The Composition logic is encapsulated within [embedded function](/functions/xapp/main.k)
+- **an [App](/apis/apps/definition.yaml) custom resource type.**
+- **Composition:** Configured in [/apis/apps/composition.yaml](/apis/apps/composition.yaml), it provisions a Ghost blog deployment with helm and resources.
+- **Embedded Function:** The Composition logic is encapsulated within [embedded function](/functions/app/main.k)
 
 ## Deployment
 
@@ -26,9 +26,9 @@ In this specific configuration, the API contains:
 
 The configuration can be tested using:
 
-- `up composition render --xrd=apis/definition.yaml apis/xapps/composition.yaml examples/app-xr.yaml` to render the composition
-- `up test run tests/*` to run composition tests in `tests/test-xapp/`
-- `up test run tests/* --e2e` to run end-to-end tests in `tests/e2etest-xapp/`
+- `up composition render --xrd=apis/apps/definition.yaml apis/apps/composition.yaml examples/app/app-xr.yaml` to render the composition
+- `up test run tests/*` to run composition tests in `tests/test-app/`
+- `up test run tests/* --e2e` to run end-to-end tests in `tests/e2etest-app/`
 
 ## Next steps
 
