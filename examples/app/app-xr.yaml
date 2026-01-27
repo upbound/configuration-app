@@ -3,6 +3,9 @@ kind: App
 metadata:
   name: configuration-app
   namespace: default
+  labels:
+    platform.upbound.io/deletion-ordering: enabled
+    test-label: test-value
 spec:
   parameters:
     helm:

@@ -24,7 +24,9 @@ _defaults = {
  
 _items = [
     helmv1beta1.Release {
-        metadata = _metadata("helmRelease")
+        metadata = _metadata("helmRelease") | {
+            labels = oxr.metadata.labels or {}
+        }
         spec = _defaults | {
             forProvider = {
                 chart = {
