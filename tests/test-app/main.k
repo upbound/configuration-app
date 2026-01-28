@@ -11,6 +11,10 @@ _items = [
                     metadata = {
                         name = "configuration-app"
                         namespace = "default"
+                        labels = {
+                            "platform.upbound.io/deletion-ordering" = "enabled"
+                            "test-label" = "test-value"
+                        }
                     }
                     spec = {
                         parameters = {
@@ -29,6 +33,10 @@ _items = [
                     metadata = {
                         annotations = {
                             "crossplane.io/composition-resource-name" = "helmRelease"
+                        }
+                        labels = {
+                            "platform.upbound.io/deletion-ordering" = "enabled"
+                            "test-label" = "test-value"
                         }
                         ownerReferences = [
                             {
