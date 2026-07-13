@@ -2,6 +2,8 @@ import models.io.crossplane.helmm.v1beta1 as helmv1beta1
 import models.io.upbound.dev.meta.v1alpha1 as metav1alpha1
 import models.io.upbound.platform.v1alpha1 as platformv1alpha1
 
+_xrUid = "3cf5e489-1512-5078-b575-3aeae0f79c88"
+
 _items = [
     metav1alpha1.CompositionTest{
         metadata.name: "app"
@@ -45,7 +47,7 @@ _items = [
                                 controller = True
                                 kind = "App"
                                 name = "configuration-app"
-                                uid = ""
+                                uid = _xrUid
                             }
                         ]
                     }
